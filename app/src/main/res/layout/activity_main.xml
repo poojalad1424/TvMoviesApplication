@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.example.tvmoviesapplication.movies.viewmodel.MovieListViewModel" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background_blue"
+        android:paddingLeft="32dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp">
+
+        <LinearLayout
+            android:id="@+id/title_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:background="@color/lb_basic_card_bg_color"
+            android:orientation="horizontal"
+            android:paddingLeft="8dp"
+            android:paddingTop="2dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="2dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Channel."
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textColor="@color/accent_color" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TV"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textColor="@color/text_blue" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/details_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title_layout"
+            android:orientation="vertical"
+            android:paddingTop="16dp"
+            android:paddingRight="48dp"
+            android:paddingBottom="16dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/white"
+                    app:mutableText="@{viewModel.getMovieTitle()}" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    app:mutableDateYear="@{viewModel.getMovieYear()}" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                app:mutableText="@{viewModel.getMovieBody()}" />
+
+
+        </LinearLayout>
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            app:mutableVisibility="@{viewModel.getLoadingVisibility()}" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/details_layout"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:mutableVisibility="@{viewModel.getDetailsVisibility()}"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingTop="8dp"
+                    android:paddingRight="16dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Most Popular"
+                        android:textColor="@android:color/white"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingRight="48dp"
+                        app:mutableVisibility="@{viewModel.getPopularMovieCountVisibility()}">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:textColor="@android:color/white"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                            app:mutableText="@{viewModel.getPopularMovieFocused()}" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:textColor="@android:color/white"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                            app:mutableText="@{viewModel.getPopularMovieCount()}" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <com.example.tvmoviesapplication.movies.utils.PersistentWrapper
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/popularRecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="true"
+                        app:adapter="@{viewModel.getPopularMovieListAdapter()}" />
+                </com.example.tvmoviesapplication.movies.utils.PersistentWrapper>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="horizontal"
+                    android:paddingTop="8dp"
+                    android:paddingRight="16dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@android:color/white"
+                        android:text="Top Rated"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingRight="48dp"
+                        app:mutableVisibility="@{viewModel.getTopRatedMovieCountVisibility()}">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:textColor="@android:color/white"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                            app:mutableText="@{viewModel.getTopRatedMovieFocused()}" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:textColor="@android:color/white"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                            app:mutableText="@{viewModel.getTopRatedMovieCount()}" />
+                    </LinearLayout>
+                </LinearLayout>
+
+
+                <com.example.tvmoviesapplication.movies.utils.PersistentWrapper
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/topRecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:adapter="@{viewModel.getTopRatedMovieListAdapter()}" />
+                </com.example.tvmoviesapplication.movies.utils.PersistentWrapper>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="horizontal"
+                    android:paddingTop="8dp"
+                    android:paddingRight="16dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Upcoming"
+                        android:textColor="@android:color/white"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingRight="48dp"
+                        app:mutableVisibility="@{viewModel.getUpcomingMovieCountVisibility()}">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:textColor="@android:color/white"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                            app:mutableText="@{viewModel.getUpcomingMovieFocused()}" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:textColor="@android:color/white"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                            app:mutableText="@{viewModel.getUpcomingMovieCount()}" />
+                    </LinearLayout>
+                </LinearLayout>
+
+
+                <com.example.tvmoviesapplication.movies.utils.PersistentWrapper
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/upcomingRecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:adapter="@{viewModel.getUpcomingMovieListAdapter()}" />
+                </com.example.tvmoviesapplication.movies.utils.PersistentWrapper>
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+    </RelativeLayout>
+
+</layout>
